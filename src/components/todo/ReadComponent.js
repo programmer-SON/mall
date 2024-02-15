@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {getOne} from "../../api/todoApi";
+import useCustomMove from "../../hooks/useCustomMove";
 
 const initState = {
     tno:0,
@@ -12,6 +13,9 @@ const initState = {
 function ReadComponent({tno}) {
 
     const [todo, setTodo] = useState(initState)
+
+    // Custom Hook
+    const {moveToList} = useCustomMove()
 
     // 함수영 Component가 상태를 유지할 수 있도록 씀
 
@@ -34,6 +38,16 @@ function ReadComponent({tno}) {
             {makeDiv('Title', todo.title)}
             {makeDiv('Due Date', todo.dueDate)}
             {makeDiv('Complete', todo.complete ? 'Completed': 'Not Yet')}
+
+            <div className="flex justify-end p-4">
+                <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500"
+                        onClick={() => moveToList()}
+                >
+                    List
+                </button>
+            </div>
+
+
         </div>
     );
 }
