@@ -15,7 +15,7 @@ function ReadComponent({tno}) {
     const [todo, setTodo] = useState(initState)
 
     // Custom Hook
-    const {moveToList} = useCustomMove()
+    const {moveToList, moveToModify} = useCustomMove()
 
     // 함수영 Component가 상태를 유지할 수 있도록 씀
 
@@ -44,6 +44,12 @@ function ReadComponent({tno}) {
                         onClick={() => moveToList()}
                 >
                     List
+                </button>
+
+                <button type="button" className="rounded p-4 m-2 text-xl w-32 text-white bg-red-500"
+                        onClick={() => moveToModify(todo.tno)}
+                >
+                    Modify
                 </button>
             </div>
 
