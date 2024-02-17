@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import useCustomMove from "../../hooks/useCustomMove";
 import {getList} from "../../api/todoApi";
+import PageComponent from "../common/PageComponent";
 
 
 const initState = {
@@ -18,7 +19,7 @@ const initState = {
 
 function ListComponent(props) {
 
-    const {page, size} = useCustomMove()
+    const {page, size, refresh, moveToList} = useCustomMove()
 
     const [serverData, setServerData] = useState(initState)
 
@@ -27,7 +28,9 @@ function ListComponent(props) {
             console.log(data)
             setServerData(data)
         })
-    }, [page,size]);
+        // page, size 변하지 않으면 다시 서버를 호출하지 않음
+        // boolean Type refresh를 추가하여 계속 변경되도록 변경하여 서버를 계속 호출하도록 적용
+    }, [page,size, refresh]);
 
     return (
         <div className ="border-2 border-blue-100 mt-10 mr-2 ml-2">
@@ -42,6 +45,8 @@ function ListComponent(props) {
                 </div>
                  )}
             </div>
+
+            <PageComponent serverData={serverData} movePage={moveToList}/>
         </div>
     );
 }
