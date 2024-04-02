@@ -8,7 +8,7 @@ const Loading = <div className={'bg-red-700'}>Loading...</div>
 const Main = lazy(()=>import("../pages/MainPage"))
 const About = lazy(()=>import("../pages/AboutPage"))
 const TodoIndex = lazy(()=>import("../pages/todo/indexPage"))
-const productsIndex = lazy(() => import("../pages/products/indexPage"))
+const ProductsIndex = lazy(() => import("../pages/products/IndexPage"))
 
 const root = createBrowserRouter([
 
@@ -27,7 +27,7 @@ const root = createBrowserRouter([
     },
     {
         path: "products",
-        element: <Suspense fallback={Loading}><productsIndex/></Suspense>,
+        element: <Suspense fallback={Loading}><ProductsIndex/></Suspense>,
         children: productsRouter()
     }
 ])
