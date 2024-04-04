@@ -1,5 +1,8 @@
 import React, {useRef, useState} from 'react';
 import {postAdd} from "../../api/productsApi";
+import FetchingModal from "../common/FetchingModal";
+import ResultModal from "../common/ResultModal";
+import useCustomMove from "../../hooks/useCustomMove";
 
 const initState = {
     pname:'',
@@ -17,6 +20,11 @@ function AddComponent(props) {
     // document.element을 통해 id와 같은 dom을 가져올 경우 재사용이 될수 있음
     // React에서는 고유한 dom 식별을 위해 useRef를 쓴다.
     const uploadRef = useRef()
+
+    const [fetching, setFetching] = useState(false) // 로딩모달
+    const [result, setResult] = useState(false)     // 등록모달
+
+    const {moveToList} = useCustomMove()
 
     const handleChangeProduct = (e) => {
         product[e.target.name] = e.target.value;
@@ -41,8 +49,19 @@ function AddComponent(props) {
 
         console.log(formData)
 
-        postAdd(formData)
+        setFetching(true)
 
+        postAdd(formData).then(data => {
+
+            setFetching(false)
+            setResult(data.result)
+        })
+
+    }
+
+    const closeModal = () => {
+        setResult(null)
+        moveToList({page:1})
     }
 
     return (
@@ -96,6 +115,18 @@ function AddComponent(props) {
                     </button>
                 </div>
             </div>
+
+            {fetching ? <FetchingModal/> : <></>}
+
+            {result ?
+                <ResultModal
+                   callbackFn={closeModal}
+                   title={'Product Add Result'}
+                   content={`${result}번 상품 등록 완료`}
+            >
+
+            </ResultModal> : <></>}
+
         </div>
       );
 }
